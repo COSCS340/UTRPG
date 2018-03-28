@@ -17,7 +17,7 @@ Because our goal for the game has changed, so has the value to potential custome
 
 The systems will change in our pivot, but, surprisingly, not by much. The movement systems that is already in place can still be utilized, if we decide that a point-and-click movement system works best. Otherwise, we could simplify it to just move on key press events. The combat system will be greatly simplified. Rather than being a turn-based system, it will simply be a live action ensemble of collusion detections. The dialogue system and character statistics system are no longer necessary, so they will be scrapped. 
 
-*TODO: goals for this iteration*
+The goals of this iteration include finishing our game, and making it fun. Whereas we have only had bits and pieces playable in the past, it is time for us to put the pieces together and polish what we need.
 
 Below are some screenshots of the output of our functioning map generation engine. 
 
@@ -25,7 +25,7 @@ Below are some screenshots of the output of our functioning map generation engin
 
 ![Another Image of Map Generation](https://i.imgur.com/dCVujRl.png)
 
-*TODO: tests ran?*
+The tests we ran included giving our game different stimulus of buttons, such as rotating the camera in varying ways multiple times, which helped us find bugs.
 
 Our goals for the next iteration are rational, yet ambitious. We will be overhauling most of our game in order to work differently, utilizing what we can and scrapping what we cannot. Our goal is, as previously stated, to pivot in the direction of a shooter game instead of an RPG game. The reason for this is to reduce the scope of the game overall and be able to have a nontrivial release out by the deadline. 
 
@@ -41,7 +41,7 @@ This has been mostly covered so far, but the product is of course not on schedul
 
 **Reflection**
 
-*TODO: what went well?*
+We had many things go well, such as our cooperation and effort that went into the game. We all played important roles and were able to get done what we needed to do.
 
 The original development schedule didn’t go well. We ended up making a lot less progress in our attempt to learn a lot of new technologies at once while developing a very ambitious project.
 
