@@ -9,25 +9,16 @@ public class CharController : MonoBehaviour
     [SerializeField]
     float moveSpeed = 6f;
     Vector3 forward, right;
+    public Animator anim;
     bool needToCheckMovement;
     //public GameObject[] groundObjects;
     public Dictionary<Vector3, GameObject> touchingObjects;
     public GameObject test;
+    //blic GameObject cam;
+    Vector3 mouse;
+    public GameObject g;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        //touchingObjects[test.GetComponent<Map>().map[new Vector2(other.gameObject.transform.position.x, other.gameObject.transform.position.z)].transform.position]
-        //    = test.GetComponent<Map>().map[new Vector2(other.gameObject.transform.position.x, other.gameObject.transform.position.z)];
-        //Debug.Log(touchingObjects.Count);
-
-        //GameObject g = other.gameObject;
-        //touchingObjects[g.transform.position] = g;
-        touchingObjects[other.gameObject.transform.position] = other.gameObject;
-        //Debug.Log(touchingObjects.Count);
-        //Debug.Log(other.gameObject.gameObject.transform.position.x + " " + other.gameObject.gameObject.transform.position.y + " " + other.gameObject.gameObject.transform.position.z);
-
-    }
-
+    bool currentlyRunning = false;
     private void OnTriggerExit(Collider other)
     {
         touchingObjects.Remove(other.gameObject.transform.position);
@@ -36,6 +27,7 @@ public class CharController : MonoBehaviour
 
     void Start()
     {
+        anim = GetComponent<Animator>();
         needToCheckMovement = false;
         forward = Camera.main.transform.forward;
         touchingObjects = new Dictionary<Vector3, GameObject>();
@@ -46,9 +38,15 @@ public class CharController : MonoBehaviour
 
     void Update()
     {
-        if (Input.anyKey)
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             //GameObject closest = findClosestGroundObject(test.GetComponent<Map>().map);
+            if(currentlyRunning == false)
+            {
+                currentlyRunning = true;
+                anim.Play("RUN00_F", -1, 0f);
+            }
+            
             Move();
             MoveY();
             needToCheckMovement = true;
@@ -56,9 +54,28 @@ public class CharController : MonoBehaviour
         else if (needToCheckMovement == true)
         {
             GameObject closest = findClosestGroundObject(test.GetComponent<Map>().map);
-            moveTowards(closest);
-            //Debug.Log(closest.name);
+            //moveTowards(closest);
+            //Debug.Log((currentlyRunning));
+            if(currentlyRunning == true)
+            {
+                anim.Play("WAIT00", -1, 0f);
+            }
+            currentlyRunning = false;
             needToCheckMovement = false;
+        }
+        if (Input.GetKey(KeyCode.Alpha3))
+        {
+            
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
+            //GameObject g = findClosestGroundObjectWVector(test.GetComponent<Map>().map, mousePosition);
+            float hor = Camera.main.GetComponent<CameraFollow>().horiz;
+            float vert = Camera.main.GetComponent<CameraFollow>().vert;
+            //transform.position = new Vector3(mousePosition.x, transform.position.y, mousePosition.z);
+            transform.position = new Vector3(mousePosition.x + (mousePosition.y * vert), transform.position.y, mousePosition.z + (mousePosition.y * hor));
+            
+            
+            
+
         }
     }
 
@@ -70,7 +87,7 @@ public class CharController : MonoBehaviour
         {
             //if((closest.transform.position.y + .5)> this.gameObject.transform.position.y)
             //{
-                transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, (float)(closest.transform.position.y + 1.5), transform.position.z), 5);
+                transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, (float)(closest.transform.position.y + 1), transform.position.z), 5);
                 //transform.position += new Vector3(0, closest.transform.position.y - this.gameObject.transform.position.y);
             //} else if(transform.position.y > (closest.transform.position.y + .5))
             //{
@@ -111,7 +128,8 @@ public class CharController : MonoBehaviour
         //return Math.Sqrt (Math.Pow (g2.transform.position.x - g1.transform.position.x, 2) + Math.Pow (g2.transform.position.z - g1.transform.position.z, 2));
         Renderer rend1 = g1.GetComponent<Renderer>();
         Renderer rend2 = g2.GetComponent<Renderer>();
-        return Math.Sqrt(Math.Pow(rend2.bounds.center.x - rend1.bounds.center.x, 2) + Math.Pow(rend2.bounds.center.z - rend1.bounds.center.z, 2));
+        return Math.Sqrt(Math.Pow(rend2.bounds.center.x - rend1.bounds.center.x, 2) + Math.Pow(rend2.bounds.center.y - rend1.bounds.center.y, 2)
+            + Math.Pow(rend2.bounds.center.z - rend1.bounds.center.z, 2));
     }
 
     GameObject findClosestGroundObject(List<GameObject> gameObjectsList)
@@ -138,7 +156,33 @@ public class CharController : MonoBehaviour
         }
         return closest;
     }
+
+    double distanceCalcVector(Vector3 g1, GameObject g2)
+    {
+        Renderer rend2 = g2.GetComponent<Renderer>();
+        return Math.Sqrt(Math.Pow(rend2.bounds.center.x - g1.x, 2) + Math.Pow(rend2.bounds.center.y - g1.y, 2) + Math.Pow(rend2.bounds.center.z - g1.z, 2));
+    }
     
+    GameObject findClosestGroundObjectWVector(List<GameObject> gameObjectsList, Vector3 g1)
+    {
+        if(gameObjectsList.Count == 0)
+        {
+            return null;
+        }
+        double distance;
+        double bestDistance = distanceCalcVector(g1, gameObjectsList[0]);
+        GameObject closest = gameObjectsList[0];
+        for(int i = 1; i < gameObjectsList.Count; i++)
+        {
+            distance = distanceCalcVector(g1, gameObjectsList[i]);
+            if(distance < bestDistance)
+            {
+                bestDistance = distance;
+                closest = gameObjectsList[i];
+            }
+        }
+        return closest;
+    }
     
 
     void moveTowards(GameObject target)

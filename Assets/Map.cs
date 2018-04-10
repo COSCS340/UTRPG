@@ -10,7 +10,7 @@ public class Map : MonoBehaviour
     int tilesetSizes = 4;
     void Start()
     {
-        GenerateMap(30, 3, 4);
+        GenerateMap(30, 3, -1);
         //tilesets
         //map = new List();
     }
