@@ -1,13 +1,13 @@
 # CS340-Project
 
-This is our strategy role playing game for cs340.  
+This is our "bullet hell" shooter game for cs340.  
 <br />
 Current to-do's:  
 - [x] Watch the survival shooter tutorial  
 - [x] download github for unity  
+- [x] Movement system  
 
 Future goals:
-- [ ] Movement system  
-- [ ] Dialogue system  
 - [ ] Fighting system  
-- [ ] Player statistics system  
+- [ ] Player statistics system 
+- [ ] ~~Dialogue system~~
