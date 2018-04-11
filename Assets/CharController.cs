@@ -14,6 +14,7 @@ public class CharController : MonoBehaviour
     //public GameObject[] groundObjects;
     public Dictionary<Vector3, GameObject> touchingObjects;
     public GameObject test;
+    public GameObject spellGameObject;
     //blic GameObject cam;
     Vector3 mouse;
     public GameObject g;
@@ -48,12 +49,12 @@ public class CharController : MonoBehaviour
             }
             
             Move();
-            MoveY();
+            //MoveY();
             needToCheckMovement = true;
         }
         else if (needToCheckMovement == true)
         {
-            GameObject closest = findClosestGroundObject(test.GetComponent<Map>().map);
+            //GameObject closest = findClosestGroundObject(test.GetComponent<Map>().map);
             //moveTowards(closest);
             //Debug.Log((currentlyRunning));
             if(currentlyRunning == true)
@@ -62,6 +63,17 @@ public class CharController : MonoBehaviour
             }
             currentlyRunning = false;
             needToCheckMovement = false;
+        }
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
+            float hor = Camera.main.GetComponent<CameraFollow>().horiz;
+            float vert = Camera.main.GetComponent<CameraFollow>().vert;
+            Vector3 startingSpot = new Vector3(mousePosition.x + (mousePosition.y * vert), transform.position.y, mousePosition.z + (mousePosition.y * hor));
+            //startingSpot = (3 / (startingSpot.magnitude)) * startingSpot;
+            Vector3 result = startingSpot - gameObject.transform.position;
+            spellGameObject.GetComponent<Spell>().createNewSpell(gameObject.transform.position + ((3/result.magnitude) * result));
+            
         }
         if (Input.GetKey(KeyCode.Alpha3))
         {

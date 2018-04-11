@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class Map : MonoBehaviour
 {
+    Dictionary<Vector3, List<GameObject>> chunks;
+    public GameObject player;
     public GameObject[] tiles;
     public List<GameObject> map;
     //0 grass 1 ice 2 cityscape 3
     int tilesetSizes = 4;
+    int chunkSize = 30;
     void Start()
     {
-        GenerateMap(30, 3, -1);
+        GenerateMap(chunkSize, 3, -1, 0, 0);
+        GenerateMap(chunkSize, 3, -1, -30, -30);
         //tilesets
         //map = new List();
     }
@@ -19,24 +23,28 @@ public class Map : MonoBehaviour
      * hills refers to how likely curY will jump a unit, the lower, the more likely. A random number will be assigned between 0 and hills.
      * If the number is hills, it will jump up 1, if it is 0, it will jump down 1. Set to a negative number if you want a flat map.
      */
-    public void GenerateMap(int size, int tileset, int hills)
+    public void GenerateMap(int size, int tileset, int hills, int startX, int startZ)
     {
-        int curX = 0;
+        map = new List<GameObject>();
+        size = startX + size;
+        int curX = startX;
         int curY = 0;
-        int curZ = 0;
-        for (curX = 0; curX < size; curX++)
+        int curZ = startZ;
+        Debug.Log("size is " + size + " curX is " + curX + " curZ is " + curZ);
+        for (curX = startX; curX < size; curX++)
         {
-            for (curZ = 0; curZ < size; curZ++)
+            for (curZ = startZ; curZ < size; curZ++)
             {
-                if (curX != 0 && curZ != 0)
+                Debug.Log("curX is " + curX + " curZ is " + curZ);
+                if (curX != startX && curZ != startZ)
                 {
-                    curY = (int)(map[map.Count - size].transform.position.y + map[map.Count - 1].transform.position.y) / 2;
+                    curY = (int)(map[map.Count - chunkSize].transform.position.y + map[map.Count - 1].transform.position.y) / 2;
                 }
-                else if (curX != 0)
+                else if (curX != startX)
                 {
-                    curY = (int)map[map.Count - size].transform.position.y;
+                    curY = (int)map[map.Count - chunkSize].transform.position.y;
                 }
-                else if (curZ != 0)
+                else if (curZ != startZ)
                 {
                     curY = (int)map[map.Count - 1].transform.position.y;
                 }
@@ -72,11 +80,20 @@ public class Map : MonoBehaviour
                 {
                     Instantiate(tiles[curTileRand], new Vector3(curX, i, curZ), transform.rotation);
                 }
+                Debug.Log("here");
                 map[map.Count - 1].AddComponent<BoxCollider>();
                 map[map.Count - 1].tag = "GroundObject";
                 map[map.Count - 1] = Instantiate(tiles[curTileRand], new Vector3(curX, curY, curZ), transform.rotation);
+                Debug.Log("there");
             }
         }
+        Vector3 v = new Vector3(startX, 1, startZ);
+        chunks[v] = map;
+    }
+
+    private void Update()
+    {
+        
     }
 
     /*
