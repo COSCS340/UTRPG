@@ -480,6 +480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fd4a6aa9f3c3f84da484f1d8f589e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1799520606}
   tiles:
   - {fileID: 100000, guid: 883c67ad233bb59478621763f0d59f7d, type: 3}
   - {fileID: 100000, guid: 7bc1a502cb9ebaf4a9a74161a1c7b9ac, type: 3}
@@ -501,7 +502,7 @@ MonoBehaviour:
   - {fileID: 100000, guid: f950e486d08ec2d4b957c3d7256b51cd, type: 3}
   - {fileID: 100000, guid: e1f1a5c165b42b040a3cfb60bcfbeef5, type: 3}
   - {fileID: 100000, guid: 82440bb59597615479bfbe8bfc6f5c87, type: 3}
-  map: []
+  curMap: []
 --- !u!4 &1047542209
 Transform:
   m_ObjectHideFlags: 0
@@ -634,8 +635,8 @@ Camera:
   m_GameObject: {fileID: 1128937701}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.45588237, g: 0.010056239, b: 0.0930721, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0

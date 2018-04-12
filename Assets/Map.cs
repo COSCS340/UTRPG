@@ -4,38 +4,72 @@ using UnityEngine;
 
 public class Map : MonoBehaviour
 {
-    Dictionary<Vector3, List<GameObject>> chunks;
+    public Dictionary<Vector3, List<GameObject>> chunks = new Dictionary<Vector3, List<GameObject>>();
     public GameObject player;
     public GameObject[] tiles;
-    public List<GameObject> map;
+    //public List<GameObject> map;
+    Vector3 currentVector;
     //0 grass 1 ice 2 cityscape 3
     int tilesetSizes = 4;
-    int chunkSize = 30;
+    int chunkSize = 10;
+    public List<GameObject> curMap;
     void Start()
     {
-        GenerateMap(chunkSize, 3, -1, 0, 0);
-        GenerateMap(chunkSize, 3, -1, -30, -30);
-        //tilesets
-        //map = new List();
+        List<GameObject> map;
+
+        for(int i = -1 * chunkSize * 2; i <= chunkSize * 2; i += chunkSize)
+        {
+            for(int j = -1 * chunkSize * 2; j <= chunkSize * 2; j += chunkSize)
+            {
+                map = new List<GameObject>();
+                currentVector = new Vector3(i, 1, j);
+                chunks.Add(currentVector, map);
+            }
+        }
+
+        foreach (KeyValuePair<Vector3, List<GameObject>> entry in chunks)
+        {
+            map = entry.Value;
+            GenerateMap(chunkSize, 1, -1, (int) entry.Key.x, (int) entry.Key.z, ref map);
+        }
     }
+
+    void destroyMap(ref List<GameObject> currentMap)
+    {
+        //GameObject g;
+        /*foreach(GameObject g in currentMap)
+        {
+            DestroyImmediate(g);
+        }*/
+        while (currentMap.Count > 0)
+        {
+            //g = currentMap[currentMap.Count - 1];
+            Destroy(currentMap[currentMap.Count - 1]);
+            currentMap.Remove(currentMap[currentMap.Count - 1]);
+        }
+    }
+
     /*
      * size refers to the size of the map.
      * hills refers to how likely curY will jump a unit, the lower, the more likely. A random number will be assigned between 0 and hills.
      * If the number is hills, it will jump up 1, if it is 0, it will jump down 1. Set to a negative number if you want a flat map.
      */
-    public void GenerateMap(int size, int tileset, int hills, int startX, int startZ)
+    public void GenerateMap(int size, int tileset, int hills, int startX, int startZ, ref List<GameObject> map)
     {
-        map = new List<GameObject>();
-        size = startX + size;
+        //Debug.Log("test");
+        //map = new List<GameObject>();
+        int xSize = startX + size;
+        int zSize = startZ + size;
+        //size = startX + size;
         int curX = startX;
         int curY = 0;
         int curZ = startZ;
         Debug.Log("size is " + size + " curX is " + curX + " curZ is " + curZ);
-        for (curX = startX; curX < size; curX++)
+        for (curX = startX; curX < xSize; curX++)
         {
-            for (curZ = startZ; curZ < size; curZ++)
+            for (curZ = startZ; curZ < zSize; curZ++)
             {
-                Debug.Log("curX is " + curX + " curZ is " + curZ);
+                //Debug.Log("curX is " + curX + " curZ is " + curZ);
                 if (curX != startX && curZ != startZ)
                 {
                     curY = (int)(map[map.Count - chunkSize].transform.position.y + map[map.Count - 1].transform.position.y) / 2;
@@ -80,27 +114,65 @@ public class Map : MonoBehaviour
                 {
                     Instantiate(tiles[curTileRand], new Vector3(curX, i, curZ), transform.rotation);
                 }
-                Debug.Log("here");
+                //Debug.Log("here");
                 map[map.Count - 1].AddComponent<BoxCollider>();
                 map[map.Count - 1].tag = "GroundObject";
-                map[map.Count - 1] = Instantiate(tiles[curTileRand], new Vector3(curX, curY, curZ), transform.rotation);
-                Debug.Log("there");
+                //map[map.Count - 1] = Instantiate(tiles[curTileRand], new Vector3(curX, curY, curZ), transform.rotation);
+                //Debug.Log("there");
             }
         }
-        Vector3 v = new Vector3(startX, 1, startZ);
-        chunks[v] = map;
+        //Vector3 v = new Vector3(startX, 1, startZ);
+        //chunks.Add(v, map);
     }
-
+    List<GameObject> currentMap;
     private void Update()
     {
-        
-    }
-
-    /*
-     * to be implemented later to use maps that we want to look a certain way... such as a castle map
-     */
-    public void MapReader(string FilePath)
-    {
-
+        foreach(KeyValuePair<Vector3, List<GameObject>> entry in chunks)
+        {
+            currentMap = entry.Value;
+            if(entry.Key.x + (chunkSize * 3) - 1 < player.transform.position.x)
+            {
+                //Debug.Log("out of x range");
+                destroyMap(ref currentMap);
+                currentVector = new Vector3(entry.Key.x + (chunkSize * 5), 1, entry.Key.z);
+                chunks.Remove(entry.Key);
+                curMap = new List<GameObject>();
+                chunks.Add(currentVector, curMap);
+                GenerateMap(chunkSize, 1, -1, (int)currentVector.x, (int)currentVector.z, ref curMap);
+                break;
+                //entry.Value.Clear();
+            } else if(entry.Key.z + (chunkSize * 3) < player.transform.position.z)
+            {
+                destroyMap(ref currentMap);
+                currentVector = new Vector3(entry.Key.x, 1, entry.Key.z + (chunkSize * 5));
+                chunks.Remove(entry.Key);
+                curMap = new List<GameObject>();
+                chunks.Add(currentVector, curMap);
+                GenerateMap(chunkSize, 1, -1, (int) currentVector.x, (int) currentVector.z, ref curMap);
+                break;
+                
+                //Debug.Log("out of z range");
+            } else if(entry.Key.x - (chunkSize * 3) + 10 > player.transform.position.x)
+            {
+                destroyMap(ref currentMap);
+                currentVector = new Vector3(entry.Key.x - (chunkSize * 5), 1, entry.Key.z);
+                chunks.Remove(entry.Key);
+                curMap = new List<GameObject>();
+                chunks.Add(currentVector, curMap);
+                GenerateMap(chunkSize, 1, -1, (int)currentVector.x, (int)currentVector.z, ref curMap);
+                break;
+                //Debug.Log("out of x range");
+            } else if(entry.Key.z - (chunkSize * 3) + 10 > player.transform.position.z)
+            {
+                destroyMap(ref currentMap);
+                currentVector = new Vector3(entry.Key.x, 1, entry.Key.z - (chunkSize * 5));
+                chunks.Remove(entry.Key);
+                curMap = new List<GameObject>();
+                chunks.Add(currentVector, curMap);
+                GenerateMap(chunkSize, 1, -1, (int) currentVector.x, (int) currentVector.z, ref curMap);
+                break;
+                //Debug.Log("out of z range");
+            }
+        }
     }
 }

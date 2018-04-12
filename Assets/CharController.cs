@@ -91,9 +91,9 @@ public class CharController : MonoBehaviour
         }
     }
 
-    void MoveY()
+    /*void MoveY()
     {
-        GameObject closest = findClosestGroundObject(test.GetComponent<Map>().map);
+        //GameObject closest = findClosestGroundObject(test.GetComponent<Map>().map);
         //GameObject closest = findClosestGroundObject(touchingObjects.Values.ToList());
         if (closest)
         {
@@ -112,7 +112,7 @@ public class CharController : MonoBehaviour
                 transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, (float)1.5, transform.position.y), 5);
             }
         }
-    }
+    }*/
 
     void Move()
     {
