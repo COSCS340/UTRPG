@@ -15,9 +15,12 @@ public class CharController : MonoBehaviour
     public Dictionary<Vector3, GameObject> touchingObjects;
     public GameObject test;
     public GameObject spellGameObject;
+    public GameObject particleManager;
+    //public bool teleportActive;
     //blic GameObject cam;
     Vector3 mouse;
     public GameObject g;
+    public bool teleportUnlocked = false;
 
     bool currentlyRunning = false;
     private void OnTriggerExit(Collider other)
@@ -56,7 +59,6 @@ public class CharController : MonoBehaviour
         {
             //GameObject closest = findClosestGroundObject(test.GetComponent<Map>().map);
             //moveTowards(closest);
-            //Debug.Log((currentlyRunning));
             if(currentlyRunning == true)
             {
                 anim.Play("WAIT00", -1, 0f);
@@ -72,12 +74,12 @@ public class CharController : MonoBehaviour
             Vector3 startingSpot = new Vector3(mousePosition.x + (mousePosition.y * vert), transform.position.y, mousePosition.z + (mousePosition.y * hor));
             //startingSpot = (3 / (startingSpot.magnitude)) * startingSpot;
             Vector3 result = startingSpot - gameObject.transform.position;
-            spellGameObject.GetComponent<Spell>().createNewSpell(gameObject.transform.position + ((3/result.magnitude) * result));
+            spellGameObject.GetComponent<Spell>().createNewSpell(gameObject.transform.position + ((3/result.magnitude) * result), true, this.gameObject);
             
         }
         if (Input.GetKey(KeyCode.Alpha3))
         {
-            
+            particleManager.GetComponent<ParticleTimer>().startParticle();
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
             //GameObject g = findClosestGroundObjectWVector(test.GetComponent<Map>().map, mousePosition);
             float hor = Camera.main.GetComponent<CameraFollow>().horiz;
@@ -146,7 +148,6 @@ public class CharController : MonoBehaviour
 
     GameObject findClosestGroundObject(List<GameObject> gameObjectsList)
     {
-        //Debug.Log(groundObjects.Length);
         if (gameObjectsList.Count == 0)
         {
             return null;
