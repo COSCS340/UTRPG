@@ -56,7 +56,6 @@ public class Map : MonoBehaviour
      */
     public void GenerateMap(int size, int tileset, int hills, int startX, int startZ, ref List<GameObject> map)
     {
-        //Debug.Log("test");
         //map = new List<GameObject>();
         int xSize = startX + size;
         int zSize = startZ + size;
@@ -64,12 +63,10 @@ public class Map : MonoBehaviour
         int curX = startX;
         int curY = 0;
         int curZ = startZ;
-        Debug.Log("size is " + size + " curX is " + curX + " curZ is " + curZ);
         for (curX = startX; curX < xSize; curX++)
         {
             for (curZ = startZ; curZ < zSize; curZ++)
             {
-                //Debug.Log("curX is " + curX + " curZ is " + curZ);
                 if (curX != startX && curZ != startZ)
                 {
                     curY = (int)(map[map.Count - chunkSize].transform.position.y + map[map.Count - 1].transform.position.y) / 2;
@@ -114,15 +111,10 @@ public class Map : MonoBehaviour
                 {
                     Instantiate(tiles[curTileRand], new Vector3(curX, i, curZ), transform.rotation);
                 }
-                //Debug.Log("here");
                 map[map.Count - 1].AddComponent<BoxCollider>();
                 map[map.Count - 1].tag = "GroundObject";
-                //map[map.Count - 1] = Instantiate(tiles[curTileRand], new Vector3(curX, curY, curZ), transform.rotation);
-                //Debug.Log("there");
             }
         }
-        //Vector3 v = new Vector3(startX, 1, startZ);
-        //chunks.Add(v, map);
     }
     List<GameObject> currentMap;
     private void Update()
@@ -132,7 +124,6 @@ public class Map : MonoBehaviour
             currentMap = entry.Value;
             if(entry.Key.x + (chunkSize * 3) - 1 < player.transform.position.x)
             {
-                //Debug.Log("out of x range");
                 destroyMap(ref currentMap);
                 currentVector = new Vector3(entry.Key.x + (chunkSize * 5), 1, entry.Key.z);
                 chunks.Remove(entry.Key);
@@ -150,8 +141,6 @@ public class Map : MonoBehaviour
                 chunks.Add(currentVector, curMap);
                 GenerateMap(chunkSize, 1, -1, (int) currentVector.x, (int) currentVector.z, ref curMap);
                 break;
-                
-                //Debug.Log("out of z range");
             } else if(entry.Key.x - (chunkSize * 3) + 10 > player.transform.position.x)
             {
                 destroyMap(ref currentMap);
@@ -161,7 +150,6 @@ public class Map : MonoBehaviour
                 chunks.Add(currentVector, curMap);
                 GenerateMap(chunkSize, 1, -1, (int)currentVector.x, (int)currentVector.z, ref curMap);
                 break;
-                //Debug.Log("out of x range");
             } else if(entry.Key.z - (chunkSize * 3) + 10 > player.transform.position.z)
             {
                 destroyMap(ref currentMap);
@@ -171,7 +159,6 @@ public class Map : MonoBehaviour
                 chunks.Add(currentVector, curMap);
                 GenerateMap(chunkSize, 1, -1, (int) currentVector.x, (int) currentVector.z, ref curMap);
                 break;
-                //Debug.Log("out of z range");
             }
         }
     }

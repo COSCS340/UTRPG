@@ -23,7 +23,6 @@ public class Player : MonoBehaviour {
 
     public bool addSubtractHP(int amount)
     {
-        Debug.Log(amount);
         if(amount < 0 && Time.time < lastDamageTaken + 1)
         {
             return true;
@@ -37,11 +36,9 @@ public class Player : MonoBehaviour {
             return true;
         } else if(health + amount < 0)
         {
-            Debug.Log(health + amount);
             health = 0;
             return false;
         }
-        Debug.Log(health + amount);
         health += amount;
         return true;
     }

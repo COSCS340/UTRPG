@@ -22,8 +22,6 @@ public class UIManagement : MonoBehaviour {
             storedHP = playerScript.health;
             storedMaxHP = playerScript.maxHealth;
             ratio = ((float) storedHP) / ((float) storedMaxHP);
-            Debug.Log("stored hp: " + storedHP + " storedMaxHP is: " + storedMaxHP);
-            Debug.Log("ratio is: " + ratio);
             currentHealthBar.rectTransform.localScale = new Vector3(ratio, 1, 1);
             healthBarText.text = "Health: " + (ratio*100).ToString("0") + '%';
         }
