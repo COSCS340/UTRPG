@@ -8,9 +8,11 @@ ModelImporter:
     100000: //RootNode
     400000: //RootNode
     2100000: Stone01_base_color
+    2100002: Stone02_base_color
     2300000: //RootNode
     3300000: //RootNode
     4300000: stone01
+    4300002: Stone02
   externalObjects: {}
   materials:
     importMaterials: 1
