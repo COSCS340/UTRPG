@@ -17,46 +17,37 @@ public class Spell : MonoBehaviour {
     // Use this for initialization
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject == player)
-        {
-            player.GetComponent<Player>().addSubtractHP(damage * -1);
-            //Destroy(gameObject);
-        }
+        //Debug.Log("colliding!");
+        //if(collision.gameObject == player)
+        //{
+        collision.gameObject.GetComponent<Player>().addSubtractHP(damage * -1);
+            //player.GetComponent<Player>().addSubtractHP(damage * -1);
+        Destroy(gameObject);
+        //}
     }
 
     public void createNewSpell(Vector3 startPosition, bool isP, GameObject call)
     {
-        if (isP)
+        isPlayer = isP;
+        caller = call;
+        if (isPlayer)
         {
-            Debug.Log("isP is true");
-            isPlayer = true;
-        } else
-        {
-            Debug.Log("isP is false");
-            caller = call;
-            isPlayer = false;
-        }
-        if(Time.time - lastSpellTime > 0.5)
-        {
-            if (isPlayer)
-            {
-                startPosition = new Vector3(startPosition.x, transform.position.y, startPosition.z);
-                Vector3 playerPosition = player.gameObject.transform.position;
-                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
-                float hor = Camera.main.GetComponent<CameraFollow>().horiz;
-                float vert = Camera.main.GetComponent<CameraFollow>().vert;
-                Vector3 startingSpot = new Vector3(mousePosition.x + (mousePosition.y * vert), 1.5f, mousePosition.z + (mousePosition.y * hor));
-                normalizePosition = (startingSpot - new Vector3(playerPosition.x, 0, playerPosition.z)).normalized;
-                startingSpot = playerPosition + (2 * normalizePosition * moveSpeed);
+            startPosition = new Vector3(startPosition.x, transform.position.y, startPosition.z);
+            Vector3 playerPosition = player.gameObject.transform.position;
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
+            float hor = Camera.main.GetComponent<CameraFollow>().horiz;
+            float vert = Camera.main.GetComponent<CameraFollow>().vert;
+            Vector3 startingSpot = new Vector3(mousePosition.x + (mousePosition.y * vert), 1.5f, mousePosition.z + (mousePosition.y * hor));
+            normalizePosition = (startingSpot - new Vector3(playerPosition.x, 0, playerPosition.z)).normalized;
+            startingSpot = playerPosition + (2 * normalizePosition * moveSpeed);
                 //startPosition = new Vector3(startPosition.x, transform.position.y, startPosition.z);
                 //start = startPosition;
-            }
-            GameObject g = Instantiate(this.gameObject, new Vector3(startPosition.x, 1.5f, startPosition.z), transform.rotation);
-            g.GetComponent<Spell>().caller = caller;
-            g.GetComponent<Spell>().isPlayer = isPlayer;
-            g.SetActive(true);
-            lastSpellTime = Time.time;
         }
+        GameObject g = Instantiate(this.gameObject, new Vector3(startPosition.x, 1.5f, startPosition.z), transform.rotation);
+        g.GetComponent<Spell>().caller = caller;
+        g.GetComponent<Spell>().isPlayer = isPlayer;
+        g.SetActive(true);
+        lastSpellTime = Time.time;
     }
 
     private void OnEnable()

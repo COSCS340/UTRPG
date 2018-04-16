@@ -6,6 +6,7 @@ public class EnemyManager : MonoBehaviour {
 
     public GameObject playerGameObject;
     public GameObject enemyGameObject;
+    public GameObject uiManager;
     public HashSet<GameObject> enemies;
     int maxDistance;
 
@@ -24,6 +25,7 @@ public class EnemyManager : MonoBehaviour {
             1, playerGameObject.transform.position.z + Random.Range(-10.0f, 10.0f));
         GameObject currentEnemy = Instantiate(enemyGameObject, enemyPosition, transform.rotation);
         enemies.Add(currentEnemy);
+        currentEnemy.SetActive(true);
     }
 
     float getDistancePlayer(GameObject currentEnemy)
@@ -40,6 +42,10 @@ public class EnemyManager : MonoBehaviour {
         }
 		foreach(GameObject currentEnemy in enemies)
         {
+            if(currentEnemy == null){
+                uiManager.GetComponent<UIManagement>().numSouls++;
+                enemies.Remove(currentEnemy);
+            }
             if(getDistancePlayer(currentEnemy) > maxDistance)
             {
                 Destroy(currentEnemy);

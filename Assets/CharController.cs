@@ -16,6 +16,8 @@ public class CharController : MonoBehaviour
     public GameObject test;
     public GameObject spellGameObject;
     public GameObject particleManager;
+    float teleportTimer = 0f;
+    float spellTimer = 0f;
     //public bool teleportActive;
     //blic GameObject cam;
     Vector3 mouse;
@@ -66,8 +68,9 @@ public class CharController : MonoBehaviour
             currentlyRunning = false;
             needToCheckMovement = false;
         }
-        if (Input.GetKey(KeyCode.Alpha1))
+        if (Input.GetKey(KeyCode.Alpha1) && Time.time > spellTimer + .5)
         {
+            spellTimer = Time.time;
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
             float hor = Camera.main.GetComponent<CameraFollow>().horiz;
             float vert = Camera.main.GetComponent<CameraFollow>().vert;
@@ -77,8 +80,9 @@ public class CharController : MonoBehaviour
             spellGameObject.GetComponent<Spell>().createNewSpell(gameObject.transform.position + ((3/result.magnitude) * result), true, this.gameObject);
             
         }
-        if (Input.GetKey(KeyCode.Alpha3))
+        if (Input.GetKey(KeyCode.Alpha3) && Time.time > teleportTimer + 2)
         {
+            teleportTimer = Time.time;
             particleManager.GetComponent<ParticleTimer>().startParticle();
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
             //GameObject g = findClosestGroundObjectWVector(test.GetComponent<Map>().map, mousePosition);

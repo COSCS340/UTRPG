@@ -11,15 +11,10 @@ public class Player : MonoBehaviour {
     float lastDamageTaken = 0f;
 	// Use this for initialization
 	void Start () {
-        maxHealth = 100;
         health = maxHealth;
-        maxMana = 100;
         mana = maxMana;
         Physics.IgnoreLayerCollision(0, 9);
 	}
-
-
-
 
     public bool addSubtractHP(int amount)
     {
@@ -34,11 +29,12 @@ public class Player : MonoBehaviour {
         {
             health = maxHealth;
             return true;
-        } else if(health + amount < 0)
+        } else if(health + amount <= 0)
         {
             health = 0;
+            Destroy(gameObject);
             return false;
-        }
+        } 
         health += amount;
         return true;
     }

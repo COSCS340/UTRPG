@@ -8,6 +8,7 @@ public class EnemyScript : MonoBehaviour {
     bool currentlyRunning = false;
     public Animator anim;
     float maxDistance;
+    float spellTimer;
     float speed;
     float waitTime;
 	// Use this for initialization
@@ -18,6 +19,7 @@ public class EnemyScript : MonoBehaviour {
 
     private void Awake()
     {
+        spellTimer = Time.time;
         maxDistance = Random.Range(5.0f, 12.0f);
     }
 
@@ -25,7 +27,10 @@ public class EnemyScript : MonoBehaviour {
     {
         waitTime = Time.time;
         Vector3 result = playerGameObject.transform.position - gameObject.transform.position;
-        spellGameObject.GetComponent<Spell>().createNewSpell(gameObject.transform.position + ((3 / result.magnitude) * result), false, this.gameObject);
+        if(Time.time > 2 + spellTimer){
+            spellGameObject.GetComponent<Spell>().createNewSpell(gameObject.transform.position + ((3 / result.magnitude) * result), false, this.gameObject);
+            spellTimer = Time.time;
+        }
     }
 
     void moveTowardsPlayer()
