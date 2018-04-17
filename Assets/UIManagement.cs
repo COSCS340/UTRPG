@@ -6,16 +6,22 @@ using UnityEngine.UI;
 public class UIManagement : MonoBehaviour {
     public GameObject player;
     public Button exitMenu;
+    public Button unlockDragonsBreath;
+    public Button unlockTeleport;
+    public Button increaseDamage;
+    public Button addMana;
     public Text upgradeHealth;
     public Button addHealth;
     public GameObject talents;
     public Image currentHealthBar;
     public Image currentManaBar;
+    public int numUpgrades = 0;
     int soulModifier = 10;
     public Text healthBarText;
     public Text manaBarText;
     public int numSouls = 10;
     public Text numberSouls;
+    public GameObject spell;
     Player playerScript;
     int storedHP = -1;
     int storedMaxHP = -1;
@@ -23,35 +29,59 @@ public class UIManagement : MonoBehaviour {
     int storedMaxMana = -1;
     float ratio;
 
-    int teleportBuy = 50;
-    int improveDamageBuy = 50;
-    int improveManaBuy = 50;
-    int improveHealthBuy = 40;
+    int itemPrice = 40;
 
 	void Start () {
         //Screen.height = 535;
         //Screen.width = 1100;
-        //numSouls = 2000;
+        numSouls = 2000;
         Screen.SetResolution(800, 535, true, 60);
         playerScript = player.GetComponent<Player>();
         exitMenu.GetComponent<Button>().onClick.AddListener(exit);
         addHealth.GetComponent<Button>().onClick.AddListener(addHealthButton);
+        addMana.GetComponent<Button>().onClick.AddListener(addManaButton);
+        increaseDamage.GetComponent<Button>().onClick.AddListener(addDamageButton);
         updateTalentText();
 	}
 
     void updateTalentText(){
-        upgradeHealth.text = "Souls Required for Each Upgrade: " + (improveHealthBuy + soulModifier); 
+        upgradeHealth.text = "Souls Required for Each Upgrade: " + (itemPrice + soulModifier); 
     }
 
     void addSoulModifier(){
         soulModifier += (int) (soulModifier * .1);
     }
 
+    void addDamageButton(){
+        if(numSouls >= itemPrice + soulModifier){
+            numUpgrades++;
+            numSouls -= itemPrice + soulModifier;
+            spell.GetComponent<Spell>().playerDamage += (int) (.1 * spell.GetComponent<Spell>().playerDamage);
+        }
+    }
+
+    void healFully(){
+        player.GetComponent<Player>().addSubtractHP(player.GetComponent<Player>().maxHealth);
+        player.GetComponent<Player>().addSubtractMana(player.GetComponent<Player>().maxMana);
+    }
+
+    void addManaButton(){
+        if(numSouls >= itemPrice + soulModifier){
+            numUpgrades++;
+            numSouls -= itemPrice + soulModifier;
+            player.GetComponent<Player>().maxMana += (int) (player.GetComponent<Player>().maxMana * .1);
+            healFully();
+            addSoulModifier();
+            updateTalentText();
+        }
+    }
+
     void addHealthButton(){
-        if(numSouls >= improveHealthBuy + soulModifier){
-            numSouls -= improveHealthBuy + soulModifier;
+        if(numSouls >= itemPrice + soulModifier){
+            numUpgrades++;
+            numSouls -= itemPrice + soulModifier;
             player.GetComponent<Player>().maxHealth += (int) (player.GetComponent<Player>().maxHealth * .1);
-            player.GetComponent<Player>().addSubtractHP(player.GetComponent<Player>().maxHealth);
+            healFully();
             addSoulModifier();
             updateTalentText();
         }

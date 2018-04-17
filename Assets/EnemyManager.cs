@@ -8,7 +8,9 @@ public class EnemyManager : MonoBehaviour {
     public GameObject enemyGameObject;
     public GameObject uiManager;
     public HashSet<GameObject> enemies;
+    int numUpgrades;
     int maxDistance;
+    bool needToCheck = false;
 
     int currentMaxEnemies;
 
@@ -52,6 +54,13 @@ public class EnemyManager : MonoBehaviour {
                 enemies.Remove(currentEnemy);
                 break;
             }
+        }
+        numUpgrades = uiManager.GetComponent<UIManagement>().numUpgrades;
+        if(needToCheck && numUpgrades % 10 == 0){
+            needToCheck = false;
+            currentMaxEnemies++;
+        } else if(!needToCheck && numUpgrades % 10 != 0){
+            needToCheck = true;
         }
 	}
 }

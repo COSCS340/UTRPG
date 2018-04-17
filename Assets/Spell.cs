@@ -8,6 +8,7 @@ public class Spell : MonoBehaviour {
     float lastSpellTime = 0;
     float beginTime = -1;
     public int damage;
+    public int playerDamage;
     public Vector3 desiredPosition;
     GameObject caller;
     public float moveSpeed = 40f;
@@ -18,9 +19,12 @@ public class Spell : MonoBehaviour {
     private void OnCollisionEnter(Collision collision)
     {
         //Debug.Log("colliding!");
-        //if(collision.gameObject == player)
-        //{
-        collision.gameObject.GetComponent<Player>().addSubtractHP(damage * -1);
+        if(collision.gameObject == player)
+        {
+            collision.gameObject.GetComponent<Player>().addSubtractHP(damage * -1);
+        } else {
+            collision.gameObject.GetComponent<Player>().addSubtractHP(playerDamage * -1);
+        }
             //player.GetComponent<Player>().addSubtractHP(damage * -1);
         Destroy(gameObject);
         //}
@@ -78,6 +82,7 @@ public class Spell : MonoBehaviour {
         //    gameObject.SetActive(true);
         //}
         damage = 5;
+        playerDamage = 10;
         
 	}
 	
