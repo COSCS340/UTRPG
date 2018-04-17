@@ -30,7 +30,7 @@ public class Map : MonoBehaviour
         foreach (KeyValuePair<Vector3, List<GameObject>> entry in chunks)
         {
             map = entry.Value;
-            GenerateMap(chunkSize, 1, -1, (int) entry.Key.x, (int) entry.Key.z, ref map);
+            GenerateMap(chunkSize, 3, -1, (int) entry.Key.x, (int) entry.Key.z, ref map);
         }
     }
 
@@ -129,7 +129,7 @@ public class Map : MonoBehaviour
                 chunks.Remove(entry.Key);
                 curMap = new List<GameObject>();
                 chunks.Add(currentVector, curMap);
-                GenerateMap(chunkSize, 1, -1, (int)currentVector.x, (int)currentVector.z, ref curMap);
+                GenerateMap(chunkSize, 3, -1, (int)currentVector.x, (int)currentVector.z, ref curMap);
                 break;
                 //entry.Value.Clear();
             } else if(entry.Key.z + (chunkSize * 3) < player.transform.position.z)
@@ -139,7 +139,7 @@ public class Map : MonoBehaviour
                 chunks.Remove(entry.Key);
                 curMap = new List<GameObject>();
                 chunks.Add(currentVector, curMap);
-                GenerateMap(chunkSize, 1, -1, (int) currentVector.x, (int) currentVector.z, ref curMap);
+                GenerateMap(chunkSize, 3, -1, (int) currentVector.x, (int) currentVector.z, ref curMap);
                 break;
             } else if(entry.Key.x - (chunkSize * 3) + 10 > player.transform.position.x)
             {
@@ -148,7 +148,7 @@ public class Map : MonoBehaviour
                 chunks.Remove(entry.Key);
                 curMap = new List<GameObject>();
                 chunks.Add(currentVector, curMap);
-                GenerateMap(chunkSize, 1, -1, (int)currentVector.x, (int)currentVector.z, ref curMap);
+                GenerateMap(chunkSize, 3, -1, (int)currentVector.x, (int)currentVector.z, ref curMap);
                 break;
             } else if(entry.Key.z - (chunkSize * 3) + 10 > player.transform.position.z)
             {
@@ -157,7 +157,7 @@ public class Map : MonoBehaviour
                 chunks.Remove(entry.Key);
                 curMap = new List<GameObject>();
                 chunks.Add(currentVector, curMap);
-                GenerateMap(chunkSize, 1, -1, (int) currentVector.x, (int) currentVector.z, ref curMap);
+                GenerateMap(chunkSize, 3, -1, (int) currentVector.x, (int) currentVector.z, ref curMap);
                 break;
             }
         }

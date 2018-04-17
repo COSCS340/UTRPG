@@ -18,6 +18,7 @@ public class CharController : MonoBehaviour
     public GameObject particleManager;
     float teleportTimer = 0f;
     float spellTimer = 0f;
+    float manaTimer = 0f;
     //public bool teleportActive;
     //blic GameObject cam;
     Vector3 mouse;
@@ -68,9 +69,10 @@ public class CharController : MonoBehaviour
             currentlyRunning = false;
             needToCheckMovement = false;
         }
-        if (Input.GetKey(KeyCode.Alpha1) && Time.time > spellTimer + .5)
+        if (Input.GetKey(KeyCode.Alpha1) && Time.time > spellTimer + .5 && gameObject.GetComponent<Player>().mana >= 1)
         {
             spellTimer = Time.time;
+            gameObject.GetComponent<Player>().addSubtractMana(-1);
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
             float hor = Camera.main.GetComponent<CameraFollow>().horiz;
             float vert = Camera.main.GetComponent<CameraFollow>().vert;
@@ -79,10 +81,9 @@ public class CharController : MonoBehaviour
             Vector3 result = startingSpot - gameObject.transform.position;
             spellGameObject.GetComponent<Spell>().createNewSpell(gameObject.transform.position + ((3/result.magnitude) * result), true, this.gameObject);
             
-        }
-        if (Input.GetKey(KeyCode.Alpha3) && Time.time > teleportTimer + 2)
-        {
+        } else if (Input.GetKey(KeyCode.Alpha3) && Time.time > teleportTimer + 2 && gameObject.GetComponent<Player>().mana >= 5) {
             teleportTimer = Time.time;
+            gameObject.GetComponent<Player>().addSubtractMana(-5);
             particleManager.GetComponent<ParticleTimer>().startParticle();
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
             //GameObject g = findClosestGroundObjectWVector(test.GetComponent<Map>().map, mousePosition);
@@ -90,10 +91,24 @@ public class CharController : MonoBehaviour
             float vert = Camera.main.GetComponent<CameraFollow>().vert;
             //transform.position = new Vector3(mousePosition.x, transform.position.y, mousePosition.z);
             transform.position = new Vector3(mousePosition.x + (mousePosition.y * vert), transform.position.y, mousePosition.z + (mousePosition.y * hor));
-            
-            
-            
-
+        }else if(Input.GetKey(KeyCode.Alpha4) && Time.time > spellTimer + .5 && gameObject.GetComponent<Player>().mana >= 5){
+            spellTimer = Time.time;
+            gameObject.GetComponent<Player>().addSubtractMana(-5);
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
+            float hor = Camera.main.GetComponent<CameraFollow>().horiz;
+            float vert = Camera.main.GetComponent<CameraFollow>().vert;
+            Vector3 startingSpot = new Vector3(mousePosition.x + (mousePosition.y * vert), transform.position.y, mousePosition.z + (mousePosition.y * hor));
+            //startingSpot = (3 / (startingSpot.magnitude)) * startingSpot;
+            Vector3 result = startingSpot - gameObject.transform.position;
+            spellGameObject.GetComponent<Spell>().createNewSpell(gameObject.transform.position + ((3/result.magnitude) * result), true, this.gameObject);
+            for(int i = 1; i < 10; i++){
+                spellGameObject.GetComponent<Spell>().createNewSpell(new Vector3(gameObject.transform.position.x + i, gameObject.transform.position.y, gameObject.transform.position.z + i) + ((3/result.magnitude) * result), true, this.gameObject);
+                spellGameObject.GetComponent<Spell>().createNewSpell(new Vector3(gameObject.transform.position.x - i, gameObject.transform.position.y, gameObject.transform.position.z - i) + ((3/result.magnitude) * result), true, this.gameObject);
+            }
+        }
+        if(Time.time > manaTimer + 2){
+            manaTimer = Time.time;
+            gameObject.GetComponent<Player>().addSubtractMana(1);
         }
     }
 

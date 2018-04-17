@@ -18,7 +18,7 @@ public class Player : MonoBehaviour {
 
     public bool addSubtractHP(int amount)
     {
-        if(amount < 0 && Time.time < lastDamageTaken + 1)
+        if(amount < 0 && Time.time < lastDamageTaken + .1)
         {
             return true;
         } else
