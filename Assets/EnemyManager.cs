@@ -7,6 +7,7 @@ public class EnemyManager : MonoBehaviour {
     public GameObject playerGameObject;
     public GameObject enemyGameObject;
     public GameObject uiManager;
+    public GameObject spell;
     public HashSet<GameObject> enemies;
     int numUpgrades;
     int maxDistance;
@@ -14,7 +15,6 @@ public class EnemyManager : MonoBehaviour {
 
     int currentMaxEnemies;
 
-	// Use this for initialization
 	void Start () {
         enemies = new HashSet<GameObject>();
         currentMaxEnemies = 2;
@@ -27,6 +27,7 @@ public class EnemyManager : MonoBehaviour {
             1, playerGameObject.transform.position.z + Random.Range(-10.0f, 10.0f));
         GameObject currentEnemy = Instantiate(enemyGameObject, enemyPosition, transform.rotation);
         enemies.Add(currentEnemy);
+        currentEnemy.GetComponent<Player>().maxHealth += Random.Range(0, numUpgrades);
         currentEnemy.SetActive(true);
     }
 
@@ -35,11 +36,9 @@ public class EnemyManager : MonoBehaviour {
         return Vector3.Distance(currentEnemy.transform.position, playerGameObject.transform.position);
     }
 
-	// Update is called once per frame
 	void Update () {
         if(enemies.Count < currentMaxEnemies)
         {
-            Debug.Log("adding an enemy");
             newEnemy(0);
         }
 		foreach(GameObject currentEnemy in enemies)
@@ -59,7 +58,10 @@ public class EnemyManager : MonoBehaviour {
         if(needToCheck && numUpgrades % 10 == 0){
             needToCheck = false;
             currentMaxEnemies++;
-        } else if(!needToCheck && numUpgrades % 10 != 0){
+        } else if(needToCheck && numUpgrades % 5 == 0){
+            needToCheck = false;
+            spell.GetComponent<Spell>().addDamage(1);
+        } else if(!needToCheck && numUpgrades % 10 != 0 && numUpgrades % 5 != 0){
             needToCheck = true;
         }
 	}

@@ -14,7 +14,7 @@ public class CameraFollow : MonoBehaviour
     public bool flip = false;
 
     Camera mycam;
-    // Use this for initialization
+
     void Start()
     {
         mycam = GetComponent<Camera>();
@@ -23,7 +23,7 @@ public class CameraFollow : MonoBehaviour
     float rotateAxis = 0;
     int curRotate;
     int curState = 0;
-    // Update is called once per frame
+
     void Update()
     {
         mycam.orthographicSize = (Screen.height / 100f) / testFloat;

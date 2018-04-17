@@ -7,9 +7,7 @@ public class Map : MonoBehaviour
     public Dictionary<Vector3, List<GameObject>> chunks = new Dictionary<Vector3, List<GameObject>>();
     public GameObject player;
     public GameObject[] tiles;
-    //public List<GameObject> map;
     Vector3 currentVector;
-    //0 grass 1 ice 2 cityscape 3
     int tilesetSizes = 4;
     int chunkSize = 10;
     public List<GameObject> curMap;
@@ -36,14 +34,8 @@ public class Map : MonoBehaviour
 
     void destroyMap(ref List<GameObject> currentMap)
     {
-        //GameObject g;
-        /*foreach(GameObject g in currentMap)
-        {
-            DestroyImmediate(g);
-        }*/
         while (currentMap.Count > 0)
         {
-            //g = currentMap[currentMap.Count - 1];
             Destroy(currentMap[currentMap.Count - 1]);
             currentMap.Remove(currentMap[currentMap.Count - 1]);
         }
@@ -56,10 +48,8 @@ public class Map : MonoBehaviour
      */
     public void GenerateMap(int size, int tileset, int hills, int startX, int startZ, ref List<GameObject> map)
     {
-        //map = new List<GameObject>();
         int xSize = startX + size;
         int zSize = startZ + size;
-        //size = startX + size;
         int curX = startX;
         int curY = 0;
         int curZ = startZ;
@@ -131,7 +121,6 @@ public class Map : MonoBehaviour
                 chunks.Add(currentVector, curMap);
                 GenerateMap(chunkSize, 3, -1, (int)currentVector.x, (int)currentVector.z, ref curMap);
                 break;
-                //entry.Value.Clear();
             } else if(entry.Key.z + (chunkSize * 3) < player.transform.position.z)
             {
                 destroyMap(ref currentMap);

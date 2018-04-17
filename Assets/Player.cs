@@ -9,12 +9,14 @@ public class Player : MonoBehaviour {
     public int maxMana;
     public int mana;
     float lastDamageTaken = 0f;
-	// Use this for initialization
+
 	void Start () {
         health = maxHealth;
         mana = maxMana;
         Physics.IgnoreLayerCollision(0, 9);
 	}
+    
+    
 
     public bool addSubtractHP(int amount)
     {
@@ -52,8 +54,5 @@ public class Player : MonoBehaviour {
         mana += amount;
         return true;
     }
-
-
-    // Update is called once per frame
     
 }

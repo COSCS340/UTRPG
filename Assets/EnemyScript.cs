@@ -11,7 +11,7 @@ public class EnemyScript : MonoBehaviour {
     float spellTimer;
     float speed;
     float waitTime;
-	// Use this for initialization
+    
 	void Start () {
         anim = GetComponent<Animator>();
         speed = 4;
@@ -44,7 +44,6 @@ public class EnemyScript : MonoBehaviour {
         return Vector3.Distance(this.gameObject.transform.position, playerGameObject.transform.position);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Time.time > waitTime + 2)

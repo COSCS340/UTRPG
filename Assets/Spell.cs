@@ -15,19 +15,20 @@ public class Spell : MonoBehaviour {
     Vector3 normalizePosition;
     Vector3 start;
     bool isPlayer;
-    // Use this for initialization
+    
     private void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log("colliding!");
         if(collision.gameObject == player)
         {
             collision.gameObject.GetComponent<Player>().addSubtractHP(damage * -1);
         } else {
             collision.gameObject.GetComponent<Player>().addSubtractHP(playerDamage * -1);
         }
-            //player.GetComponent<Player>().addSubtractHP(damage * -1);
         Destroy(gameObject);
-        //}
+    }
+
+    public void addDamage(int amount){
+        damage += amount;
     }
 
     public void createNewSpell(Vector3 startPosition, bool isP, GameObject call)
@@ -44,12 +45,12 @@ public class Spell : MonoBehaviour {
             Vector3 startingSpot = new Vector3(mousePosition.x + (mousePosition.y * vert), 1.5f, mousePosition.z + (mousePosition.y * hor));
             normalizePosition = (startingSpot - new Vector3(playerPosition.x, 0, playerPosition.z)).normalized;
             startingSpot = playerPosition + (2 * normalizePosition * moveSpeed);
-                //startPosition = new Vector3(startPosition.x, transform.position.y, startPosition.z);
-                //start = startPosition;
         }
         GameObject g = Instantiate(this.gameObject, new Vector3(startPosition.x, 1.5f, startPosition.z), transform.rotation);
         g.GetComponent<Spell>().caller = caller;
         g.GetComponent<Spell>().isPlayer = isPlayer;
+        g.GetComponent<Spell>().damage = damage;
+        g.GetComponent<Spell>().playerDamage = playerDamage;
         g.SetActive(true);
         lastSpellTime = Time.time;
     }
@@ -69,24 +70,9 @@ public class Spell : MonoBehaviour {
                 player.gameObject.transform.position.z + Random.Range(-2.0f, 2.0f));
             normalizePosition = desiredPosition - new Vector3(caller.gameObject.transform.position.x, 1.5f, caller.gameObject.transform.position.z);
         }
-        //normalizePosition = (desiredPosition - start).normalized;
         beginTime = Time.time;
     }
-
-    void Start () {
-        //if(gameObject.activeSelf == true)
-        //{
-        //    gameObject.SetActive(false);
-        //} else
-        //{
-        //    gameObject.SetActive(true);
-        //}
-        damage = 5;
-        playerDamage = 10;
-        
-	}
 	
-	// Update is called once per frame
 	void Update () {
         if(beginTime != -1 && Time.time - beginTime > alivePeriod)
         {
@@ -98,6 +84,5 @@ public class Spell : MonoBehaviour {
     private void moveTowardsDesiredPosition()
     {
         this.gameObject.transform.position += normalizePosition * moveSpeed * Time.deltaTime;
-        //this.gameObject.transform.position = Vector3.MoveTowards(this.gameObject.transform.position, desiredPosition, moveSpeed * Time.deltaTime);
     }
 }

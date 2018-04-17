@@ -13,6 +13,8 @@ public class UIManagement : MonoBehaviour {
     public Text upgradeHealth;
     public Button addHealth;
     public GameObject talents;
+    public GameObject spell3Select;
+    public GameObject spell2Select;
     public Image currentHealthBar;
     public Image currentManaBar;
     public int numUpgrades = 0;
@@ -32,20 +34,44 @@ public class UIManagement : MonoBehaviour {
     int itemPrice = 40;
 
 	void Start () {
-        //Screen.height = 535;
-        //Screen.width = 1100;
-        numSouls = 2000;
+        numSouls = 0;
         Screen.SetResolution(800, 535, true, 60);
         playerScript = player.GetComponent<Player>();
         exitMenu.GetComponent<Button>().onClick.AddListener(exit);
         addHealth.GetComponent<Button>().onClick.AddListener(addHealthButton);
         addMana.GetComponent<Button>().onClick.AddListener(addManaButton);
         increaseDamage.GetComponent<Button>().onClick.AddListener(addDamageButton);
+        unlockDragonsBreath.GetComponent<Button>().onClick.AddListener(unlockDragonsBreathButton);
+        unlockTeleport.GetComponent<Button>().onClick.AddListener(unlockTeleportButton);
         updateTalentText();
 	}
 
     void updateTalentText(){
         upgradeHealth.text = "Souls Required for Each Upgrade: " + (itemPrice + soulModifier); 
+    }
+
+    void unlockDragonsBreathButton(){
+        if(numSouls >= itemPrice + soulModifier){
+            numUpgrades++;
+            numSouls -= itemPrice + soulModifier;
+            player.GetComponent<CharController>().dragonsBreathUnlocked = true;
+            spell3Select.SetActive(true);
+            unlockDragonsBreath.gameObject.SetActive(false);
+            addSoulModifier();
+            updateTalentText();
+        }
+    }
+
+    void unlockTeleportButton(){
+        if(numSouls >= itemPrice + soulModifier){
+            numUpgrades++;
+            numSouls -= itemPrice + soulModifier;
+            player.GetComponent<CharController>().teleportUnlocked = true;
+            spell2Select.SetActive(true);
+            unlockTeleport.gameObject.SetActive(false);
+            addSoulModifier();
+            updateTalentText();
+        }
     }
 
     void addSoulModifier(){
@@ -57,6 +83,8 @@ public class UIManagement : MonoBehaviour {
             numUpgrades++;
             numSouls -= itemPrice + soulModifier;
             spell.GetComponent<Spell>().playerDamage += (int) (.1 * spell.GetComponent<Spell>().playerDamage);
+            addSoulModifier();
+            updateTalentText();
         }
     }
 
@@ -93,8 +121,6 @@ public class UIManagement : MonoBehaviour {
     }
 	
 	void Update () {
-        //Debug.Log("screen resolution: " + Screen.currentResolution);
-        //Debug.Log("screen dimensions" + Screen.width + " " + Screen.height);
         if(Input.GetKeyDown(KeyCode.T)){
             Time.timeScale = 0.0f;
             talents.SetActive(true);
