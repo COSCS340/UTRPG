@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465934, g: 0.49642956, b: 0.57482487, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -211,9 +211,9 @@ RectTransform:
   m_Father: {fileID: 1896105666}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 40, y: 210}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 40, y: -58}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &226531219
@@ -628,9 +628,9 @@ RectTransform:
   m_Father: {fileID: 1896105666}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -400, y: -105}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 174.79999, y: -105}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &556985062
@@ -955,9 +955,9 @@ RectTransform:
   m_Father: {fileID: 1896105666}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -400, y: -50}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 175, y: -50}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &829784669
@@ -1134,9 +1134,9 @@ RectTransform:
   m_Father: {fileID: 1896105666}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 26.5, y: 218}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 27.099976, y: -50}
   m_SizeDelta: {x: 295, y: 45}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &940821131
@@ -1249,6 +1249,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerGameObject: {fileID: 1799520606}
   enemyGameObject: {fileID: 515808287}
+  uiManager: {fileID: 0}
+  spell: {fileID: 0}
 --- !u!1 &1053202582
 GameObject:
   m_ObjectHideFlags: 0
@@ -1698,6 +1700,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1799520606}
   damage: 0
+  playerDamage: 0
   desiredPosition: {x: 0, y: 0, z: 0}
   moveSpeed: 5
 --- !u!54 &1137564456
@@ -3763,7 +3766,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 26.5, y: -82}
+  m_AnchoredPosition: {x: 26.099976, y: -81.796326}
   m_SizeDelta: {x: 295, y: 45}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1561580654
@@ -3899,6 +3902,7 @@ MonoBehaviour:
   particleManager: {fileID: 2036817916}
   g: {fileID: 1799520606}
   teleportUnlocked: 0
+  dragonsBreathUnlocked: 0
 --- !u!23 &1799520610
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4249,9 +4253,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1799520606}
+  exitMenu: {fileID: 0}
+  unlockDragonsBreath: {fileID: 0}
+  unlockTeleport: {fileID: 0}
+  increaseDamage: {fileID: 0}
+  addMana: {fileID: 0}
+  upgradeHealth: {fileID: 0}
+  addHealth: {fileID: 0}
+  talents: {fileID: 0}
+  spell3Select: {fileID: 0}
+  spell2Select: {fileID: 0}
   currentHealthBar: {fileID: 940821131}
+  currentManaBar: {fileID: 0}
+  numUpgrades: 0
   healthBarText: {fileID: 226531219}
+  manaBarText: {fileID: 0}
   numSouls: 0
+  numberSouls: {fileID: 0}
+  spell: {fileID: 0}
 --- !u!1 &1943121844
 GameObject:
   m_ObjectHideFlags: 0
