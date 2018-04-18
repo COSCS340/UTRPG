@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManagement : MonoBehaviour {
     public GameObject player;
@@ -12,6 +13,8 @@ public class UIManagement : MonoBehaviour {
     public Button addMana;
     public Text upgradeHealth;
     public Button addHealth;
+    public Image gameOverImage;
+    public Button gameOver;
     public GameObject talents;
     public GameObject spell3Select;
     public GameObject spell2Select;
@@ -34,8 +37,11 @@ public class UIManagement : MonoBehaviour {
     int itemPrice = 40;
 
 	void Start () {
+        Time.timeScale = 1;
+        //Debug.Log("width " + Screen.width + " height " + Screen.height);
+        //Debug.Log("resolution: " + Screen.currentResolution);
         numSouls = 0;
-        Screen.SetResolution(800, 535, true, 60);
+        //Screen.SetResolution(2880, 1800, true, 60);
         playerScript = player.GetComponent<Player>();
         exitMenu.GetComponent<Button>().onClick.AddListener(exit);
         addHealth.GetComponent<Button>().onClick.AddListener(addHealthButton);
@@ -43,6 +49,7 @@ public class UIManagement : MonoBehaviour {
         increaseDamage.GetComponent<Button>().onClick.AddListener(addDamageButton);
         unlockDragonsBreath.GetComponent<Button>().onClick.AddListener(unlockDragonsBreathButton);
         unlockTeleport.GetComponent<Button>().onClick.AddListener(unlockTeleportButton);
+        gameOver.GetComponent<Button>().onClick.AddListener(gameOverButton);
         updateTalentText();
 	}
 
@@ -115,6 +122,10 @@ public class UIManagement : MonoBehaviour {
         }
     }
 
+    void gameOverButton(){
+        SceneManager.LoadScene("OpeningMenu", LoadSceneMode.Single);
+    }
+
     void exit(){
         talents.SetActive(false);
         Time.timeScale = 1.0f;
@@ -142,5 +153,9 @@ public class UIManagement : MonoBehaviour {
             manaBarText.text = "Mana: " + (ratio*100).ToString("0") + '%';
         }
         numberSouls.text = "Number of Souls Collected: " + numSouls;
+        if(player == null){
+            Time.timeScale = 0;
+            gameOverImage.gameObject.SetActive(true);
+        }
 	}
 }

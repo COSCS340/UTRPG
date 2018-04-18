@@ -21,6 +21,7 @@ public class EnemyScript : MonoBehaviour {
     {
         spellTimer = Time.time;
         maxDistance = Random.Range(5.0f, 12.0f);
+        moveTowardsPlayer();
     }
 
     void attackPlayer()
