@@ -18,6 +18,7 @@ public class OpeningMenuUI : MonoBehaviour {
 	//private var myLoadedAssetBundle: AssetBundle;
 
 	void Start () {
+		Screen.SetResolution(1148, 536, true);
 		newGame.GetComponent<Button>().onClick.AddListener(newGameButton);
 		lore.GetComponent<Button>().onClick.AddListener(loreButton);
 		controls.GetComponent<Button>().onClick.AddListener(controlsButton);

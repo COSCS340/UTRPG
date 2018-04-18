@@ -17,6 +17,7 @@ public class CameraFollow : MonoBehaviour
 
     void Start()
     {
+        Screen.SetResolution(1148, 536, true);
         mycam = GetComponent<Camera>();
     }
     bool canRotate = true;
