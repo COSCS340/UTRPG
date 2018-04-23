@@ -5294,7 +5294,7 @@ MonoBehaviour:
   numUpgrades: 0
   healthBarText: {fileID: 226531219}
   manaBarText: {fileID: 536352503}
-  numSouls: 0
+  numSouls: 30000
   numberSouls: {fileID: 1363488746}
   spell: {fileID: 1137564450}
 --- !u!1 &1943121844

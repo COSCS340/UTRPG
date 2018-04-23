@@ -40,7 +40,7 @@ public class UIManagement : MonoBehaviour {
         Time.timeScale = 1;
         //Debug.Log("width " + Screen.width + " height " + Screen.height);
         //Debug.Log("resolution: " + Screen.currentResolution);
-        numSouls = 0;
+        numSouls = 3000000;
         //Screen.SetResolution(2880, 1800, true, 60);
         playerScript = player.GetComponent<Player>();
         exitMenu.GetComponent<Button>().onClick.AddListener(exit);
