@@ -42,7 +42,8 @@ public class CharController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        print(Input.GetAxis("TP"));
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetAxis("HorizontalJoystick") != 0 || Input.GetAxis("VerticalJoystick") != 0)
         {
             if(currentlyRunning == false)
             {
@@ -61,7 +62,7 @@ public class CharController : MonoBehaviour
             currentlyRunning = false;
             needToCheckMovement = false;
         }
-        if (Input.GetKey(KeyCode.Alpha1) && Time.time > spellTimer + .5 && gameObject.GetComponent<Player>().mana >= 1)
+        if (Input.GetAxis("Attack") == 1 && Time.time > spellTimer + .5 && gameObject.GetComponent<Player>().mana >= 1)
         {
             spellTimer = Time.time;
             gameObject.GetComponent<Player>().addSubtractMana(-1);
@@ -69,7 +70,9 @@ public class CharController : MonoBehaviour
             float hor = Camera.main.GetComponent<CameraFollow>().horiz;
             float vert = Camera.main.GetComponent<CameraFollow>().vert;
             Vector3 startingSpot = new Vector3(mousePosition.x + (mousePosition.y * vert), transform.position.y, mousePosition.z + (mousePosition.y * hor));
+            //print(mousePosition.x + (mousePosition.y * vert) + " " + transform.position.y + " " + (mousePosition.z + (mousePosition.y * hor)));
             Vector3 result = startingSpot - gameObject.transform.position;
+            print(result);
             spellGameObject.GetComponent<Spell>().createNewSpell(gameObject.transform.position + ((3/result.magnitude) * result), true, this.gameObject);
             
         } else if (Input.GetKey(KeyCode.Alpha3) && Time.time > teleportTimer + 2 && gameObject.GetComponent<Player>().mana >= 5 && teleportUnlocked) {
@@ -79,7 +82,7 @@ public class CharController : MonoBehaviour
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));            float hor = Camera.main.GetComponent<CameraFollow>().horiz;
             float vert = Camera.main.GetComponent<CameraFollow>().vert;
             transform.position = new Vector3(mousePosition.x + (mousePosition.y * vert), transform.position.y, mousePosition.z + (mousePosition.y * hor));
-        }else if(Input.GetKey(KeyCode.Alpha4) && Time.time > spellTimer + .5 && gameObject.GetComponent<Player>().mana >= 5 && dragonsBreathUnlocked){
+        }else if(Input.GetAxis("DB") == 1 && Time.time > spellTimer + .5 && gameObject.GetComponent<Player>().mana >= 5 && dragonsBreathUnlocked){
             spellTimer = Time.time;
             gameObject.GetComponent<Player>().addSubtractMana(-5);
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
@@ -92,8 +95,16 @@ public class CharController : MonoBehaviour
                 spellGameObject.GetComponent<Spell>().createNewSpell(new Vector3(gameObject.transform.position.x + i, gameObject.transform.position.y, gameObject.transform.position.z + i) + ((3/result.magnitude) * result), true, this.gameObject);
                 spellGameObject.GetComponent<Spell>().createNewSpell(new Vector3(gameObject.transform.position.x - i, gameObject.transform.position.y, gameObject.transform.position.z - i) + ((3/result.magnitude) * result), true, this.gameObject);
             }
+        }else if (Input.GetAxis("TP") == 1 && Time.time > teleportTimer + 2 && gameObject.GetComponent<Player>().mana >= 5 && teleportUnlocked)
+        {
+            teleportTimer = Time.time;
+            gameObject.GetComponent<Player>().addSubtractMana(-5);
+            particleManager.GetComponent<ParticleTimer>().startParticle();
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z)); float hor = Camera.main.GetComponent<CameraFollow>().horiz;
+            float vert = Camera.main.GetComponent<CameraFollow>().vert;
+            transform.position = new Vector3(mousePosition.x + (mousePosition.y * vert), transform.position.y, mousePosition.z + (mousePosition.y * hor));
         }
-        if(Time.time > manaTimer + 2){
+        if (Time.time > manaTimer + 2){
             manaTimer = Time.time;
             gameObject.GetComponent<Player>().addSubtractMana(1);
         }
@@ -105,12 +116,28 @@ public class CharController : MonoBehaviour
         Vector3 upMovement;
         if (!Camera.main.GetComponent<CameraFollow>().flip)
         {
-            rightMovement = right * moveSpeed * Time.deltaTime * Input.GetAxis("HorizontalKey") * Camera.main.GetComponent<CameraFollow>().horiz;
-            upMovement = forward * moveSpeed * Time.deltaTime * Input.GetAxis("VerticalKey") * Camera.main.GetComponent<CameraFollow>().vert;
+            if (Input.GetAxis("HorizontalJoystick") != 0 || Input.GetAxis("VerticalJoystick") != 0)
+            {
+                rightMovement = right * moveSpeed * Time.deltaTime * Input.GetAxis("HorizontalJoystick") * Camera.main.GetComponent<CameraFollow>().horiz;
+                upMovement = forward * moveSpeed * Time.deltaTime * Input.GetAxis("VerticalJoystick") * Camera.main.GetComponent<CameraFollow>().vert;
+            }
+            else
+            {
+                rightMovement = right * moveSpeed * Time.deltaTime * Input.GetAxis("HorizontalKey") * Camera.main.GetComponent<CameraFollow>().horiz;
+                upMovement = forward * moveSpeed * Time.deltaTime * Input.GetAxis("VerticalKey") * Camera.main.GetComponent<CameraFollow>().vert;
+            }
         } else
         {
-            rightMovement = forward * moveSpeed * Time.deltaTime * Input.GetAxis("HorizontalKey") * Camera.main.GetComponent<CameraFollow>().horiz;
-            upMovement = right * moveSpeed * Time.deltaTime * Input.GetAxis("VerticalKey") * Camera.main.GetComponent<CameraFollow>().vert;
+            if (Input.GetAxis("HorizontalJoystick") != 0 || Input.GetAxis("VerticalJoystick") != 0)
+            {
+                rightMovement = forward * moveSpeed * Time.deltaTime * Input.GetAxis("HorizontalJoystick") * Camera.main.GetComponent<CameraFollow>().horiz;
+                upMovement = right * moveSpeed * Time.deltaTime * Input.GetAxis("VerticalJoystick") * Camera.main.GetComponent<CameraFollow>().vert;
+            }
+            else
+            {
+                rightMovement = forward * moveSpeed * Time.deltaTime * Input.GetAxis("HorizontalKey") * Camera.main.GetComponent<CameraFollow>().horiz;
+                upMovement = right * moveSpeed * Time.deltaTime * Input.GetAxis("VerticalKey") * Camera.main.GetComponent<CameraFollow>().vert;
+            }
         }
         Vector3 heading = Vector3.Normalize(rightMovement + upMovement);
 

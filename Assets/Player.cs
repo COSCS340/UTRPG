@@ -17,6 +17,7 @@ public class Player : MonoBehaviour {
 	}
     
     
+    
 
     public bool addSubtractHP(int amount)
     {
